@@ -1,0 +1,26 @@
+export default {
+   appUserStock: {
+        index: '#',
+        importappUserStockTip: 'import AppUserStock',
+        id: 'id',
+        userId: 'userId',
+        code: 'code',
+        name: 'name',
+        holdVolume: 'holdVolume',
+        validVolume: 'validVolume',
+        costPrice: 'costPrice',
+        createTime: 'createTime',
+        updateTime: 'updateTime',
+        delFlag: 'delFlag',
+        inputIdTip: 'input id',
+        inputUserIdTip: 'input userId',
+        inputCodeTip: 'input code',
+        inputNameTip: 'input name',
+        inputHoldVolumeTip: 'input holdVolume',
+        inputValidVolumeTip: 'input validVolume',
+        inputCostPriceTip: 'input costPrice',
+        inputCreateTimeTip: 'input createTime',
+        inputUpdateTimeTip: 'input updateTime',
+        inputDelFlagTip: 'input delFlag',
+    }
+}

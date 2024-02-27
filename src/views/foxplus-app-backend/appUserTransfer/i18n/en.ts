@@ -1,0 +1,26 @@
+export default {
+   appUserTransfer: {
+        index: '#',
+        importappUserTransferTip: 'import AppUserTransfer',
+        id: 'id',
+        userId: 'userId',
+        transDate: 'transDate',
+        amount: 'amount',
+        type: 'type',
+        cash: 'cash',
+        bankCash: 'bankCash',
+        createTime: 'createTime',
+        updateTime: 'updateTime',
+        delFlag: 'delFlag',
+        inputIdTip: 'input id',
+        inputUserIdTip: 'input userId',
+        inputTransDateTip: 'input transDate',
+        inputAmountTip: 'input amount',
+        inputTypeTip: 'input type',
+        inputCashTip: 'input cash',
+        inputBankCashTip: 'input bankCash',
+        inputCreateTimeTip: 'input createTime',
+        inputUpdateTimeTip: 'input updateTime',
+        inputDelFlagTip: 'input delFlag',
+    }
+}
