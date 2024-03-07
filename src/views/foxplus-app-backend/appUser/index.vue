@@ -1,6 +1,31 @@
 <template>
   <div class="layout-padding">
     <div class="layout-padding-auto layout-padding-view">
+      <el-row v-show="showSearch">
+        <el-form :model="state.queryForm" ref="queryRef" :inline="true" @keyup.enter="getDataList">
+      <el-form-item label="用户名" prop="username" >
+        <el-input placeholder="请输入用户名" v-model="state.queryForm.username" />
+      </el-form-item>
+      <el-form-item label="电话号码" prop="phone" >
+        <el-input placeholder="请输入电话号码" v-model="state.queryForm.phone" />
+      </el-form-item>
+      <el-form-item label="昵称" prop="nickname" >
+        <el-input placeholder="请输入昵称" v-model="state.queryForm.nickname" />
+      </el-form-item>
+      <el-form-item label="姓名" prop="name" >
+        <el-input placeholder="请输入姓名" v-model="state.queryForm.name" />
+      </el-form-item>
+      <el-form-item label="邮箱地址" prop="email" >
+        <el-input placeholder="请输入邮箱地址" v-model="state.queryForm.email" />
+      </el-form-item>
+          <el-form-item>
+            <el-button icon="search" type="primary" @click="getDataList">
+              查询
+            </el-button>
+            <el-button icon="Refresh" @click="resetQuery">重置</el-button>
+          </el-form-item>
+        </el-form>
+      </el-row>
       <el-row>
         <div class="mb8" style="width: 100%">
           <el-button icon="folder-add" type="primary" class="ml10" @click="formDialogRef.openDialog()"

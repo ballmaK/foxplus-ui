@@ -10,6 +10,12 @@
       </el-col>
 
     <el-col :span="12" class="mb20">
+      <el-form-item label="交易ID，清仓前不变" prop="transactionId">
+        <el-input v-model="form.transactionId" placeholder="请输入交易ID，清仓前不变"/>
+      </el-form-item>
+      </el-col>
+
+    <el-col :span="12" class="mb20">
       <el-form-item label="股票代码" prop="code">
         <el-input v-model="form.code" placeholder="请输入股票代码"/>
       </el-form-item>
@@ -170,6 +176,7 @@ const { deal_type,deal_stock_deal_status,deal_direction } = useDict('deal_type',
 const form = reactive({
 		id:'',
 	  userId: '',
+	  transactionId: '',
 	  code: '',
 	  dealDate: '',
 	  dealTime: '',
@@ -197,6 +204,7 @@ const form = reactive({
 // 定义校验规则
 const dataRules = ref({
         userId: [{required: true, message: '用户ID不能为空', trigger: 'blur'}],
+        transactionId: [{required: true, message: '交易ID，清仓前不变不能为空', trigger: 'blur'}],
         code: [{required: true, message: '股票代码不能为空', trigger: 'blur'}],
         dealDate: [{required: true, message: '交易日期不能为空', trigger: 'blur'}],
         dealTime: [{required: true, message: '成交时间不能为空', trigger: 'blur'}],

@@ -6,11 +6,11 @@
       <el-form-item label="用户ID" prop="userId" >
         <el-input placeholder="请输入用户ID" v-model="state.queryForm.userId" />
       </el-form-item>
-      <el-form-item label="转账日期" prop="transDate" >
-        <el-input placeholder="请输入转账日期" v-model="state.queryForm.transDate" />
+      <el-form-item label="用户名" prop="username" >
+        <el-input placeholder="请输入用户名" v-model="state.queryForm.username" />
       </el-form-item>
-      <el-form-item label="交易类型，0转入，1转出" prop="type" >
-        <el-input placeholder="请输入交易类型，0转入，1转出" v-model="state.queryForm.type" />
+      <el-form-item label="积分余额" prop="pointsBalance" >
+        <el-input placeholder="请输入积分余额" v-model="state.queryForm.pointsBalance" />
       </el-form-item>
           <el-form-item>
             <el-button icon="search" type="primary" @click="getDataList">
@@ -23,14 +23,14 @@
       <el-row>
         <div class="mb8" style="width: 100%">
           <el-button icon="folder-add" type="primary" class="ml10" @click="formDialogRef.openDialog()"
-            v-auth="'foxplus-app-backend_appUserTransfer_add'">
+            v-auth="'foxplus-app-backend_appUserPoints_add'">
             新 增
           </el-button>
           <el-button plain :disabled="multiple" icon="Delete" type="primary"
-            v-auth="'foxplus-app-backend_appUserTransfer_del'" @click="handleDelete(selectObjs)">
+            v-auth="'foxplus-app-backend_appUserPoints_del'" @click="handleDelete(selectObjs)">
             删除
           </el-button>
-          <right-toolbar v-model:showSearch="showSearch" :export="'foxplus-app-backend_appUserTransfer_export'"
+          <right-toolbar v-model:showSearch="showSearch" :export="'foxplus-app-backend_appUserPoints_export'"
                 @exportExcel="exportExcel" class="ml10 mr20" style="float: right;"
             @queryTable="getDataList"></right-toolbar>
         </div>
@@ -42,20 +42,16 @@
         <el-table-column type="selection" width="40" align="center" />
         <el-table-column type="index" label="#" width="40" />
           <el-table-column prop="userId" label="用户ID"  show-overflow-tooltip/>
-          <el-table-column prop="transDate" label="转账日期"  show-overflow-tooltip/>
-          <el-table-column prop="amount" label="发生额(元)"  show-overflow-tooltip/>
-          <el-table-column prop="type" label="交易类型，0转入，1转出" show-overflow-tooltip>
-      <template #default="scope">
-                <dict-tag :options="user_transfer_type" :value="scope.row.type"></dict-tag>
-            </template>
-          </el-table-column>
-          <el-table-column prop="cash" label="可用现金"  show-overflow-tooltip/>
-          <el-table-column prop="bankCash" label="可取现金"  show-overflow-tooltip/>
+          <el-table-column prop="username" label="用户名"  show-overflow-tooltip/>
+          <el-table-column prop="pointsChange" label="积分变动"  show-overflow-tooltip/>
+          <el-table-column prop="pointsBalance" label="积分余额"  show-overflow-tooltip/>
+          <el-table-column prop="expireTime" label="有效期"  show-overflow-tooltip/>
+          <el-table-column prop="changeReason" label="变动原因"  show-overflow-tooltip/>
         <el-table-column label="操作" width="150">
           <template #default="scope">
-            <el-button icon="edit-pen" text type="primary" v-auth="'foxplus-app-backend_appUserTransfer_edit'"
+            <el-button icon="edit-pen" text type="primary" v-auth="'foxplus-app-backend_appUserPoints_edit'"
               @click="formDialogRef.openDialog(scope.row.id)">编辑</el-button>
-            <el-button icon="delete" text type="primary" v-auth="'foxplus-app-backend_appUserTransfer_del'" @click="handleDelete([scope.row.id])">删除</el-button>
+            <el-button icon="delete" text type="primary" v-auth="'foxplus-app-backend_appUserPoints_del'" @click="handleDelete([scope.row.id])">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -68,9 +64,9 @@
   </div>
 </template>
 
-<script setup lang="ts" name="systemAppUserTransfer">
+<script setup lang="ts" name="systemAppUserPoints">
 import { BasicTableProps, useTable } from "/@/hooks/table";
-import { fetchList, delObjs } from "/@/api/foxplus-app-backend/appUserTransfer";
+import { fetchList, delObjs } from "/@/api/foxplus-app-backend/appUserPoints";
 import { useMessage, useMessageBox } from "/@/hooks/message";
 import { useDict } from '/@/hooks/dict';
 
@@ -78,7 +74,6 @@ import { useDict } from '/@/hooks/dict';
 const FormDialog = defineAsyncComponent(() => import('./form.vue'));
 // 定义查询字典
 
-const { user_transfer_type } = useDict('user_transfer_type')
 // 定义变量内容
 const formDialogRef = ref()
 // 搜索变量
@@ -114,7 +109,7 @@ const resetQuery = () => {
 
 // 导出excel
 const exportExcel = () => {
-  downBlobFile('/foxplus-app-backend/appUserTransfer/export',Object.assign(state.queryForm, { ids: selectObjs }), 'appUserTransfer.xlsx')
+  downBlobFile('/foxplus-app-backend/appUserPoints/export',Object.assign(state.queryForm, { ids: selectObjs }), 'appUserPoints.xlsx')
 }
 
 // 多选事件

@@ -1,6 +1,22 @@
 <template>
   <div class="layout-padding">
     <div class="layout-padding-auto layout-padding-view">
+      <el-row v-show="showSearch">
+        <el-form :model="state.queryForm" ref="queryRef" :inline="true" @keyup.enter="getDataList">
+      <el-form-item label="角色名称" prop="roleName" >
+        <el-input placeholder="请输入角色名称" v-model="state.queryForm.roleName" />
+      </el-form-item>
+      <el-form-item label="所需积分" prop="requiredPoints" >
+        <el-input placeholder="请输入所需积分" v-model="state.queryForm.requiredPoints" />
+      </el-form-item>
+          <el-form-item>
+            <el-button icon="search" type="primary" @click="getDataList">
+              查询
+            </el-button>
+            <el-button icon="Refresh" @click="resetQuery">重置</el-button>
+          </el-form-item>
+        </el-form>
+      </el-row>
       <el-row>
         <div class="mb8" style="width: 100%">
           <el-button icon="folder-add" type="primary" class="ml10" @click="formDialogRef.openDialog()"
@@ -25,6 +41,7 @@
           <el-table-column prop="roleName" label="角色名称"  show-overflow-tooltip/>
           <el-table-column prop="roleCode" label="角色编码"  show-overflow-tooltip/>
           <el-table-column prop="roleDesc" label="角色描述"  show-overflow-tooltip/>
+          <el-table-column prop="requiredPoints" label="所需积分"  show-overflow-tooltip/>
         <el-table-column label="操作" width="150">
           <template #default="scope">
             <el-button icon="edit-pen" text type="primary" v-auth="'foxplus-app-backend_appRole_edit'"

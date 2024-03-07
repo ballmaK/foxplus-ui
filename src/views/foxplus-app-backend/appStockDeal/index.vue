@@ -1,6 +1,28 @@
 <template>
   <div class="layout-padding">
     <div class="layout-padding-auto layout-padding-view">
+      <el-row v-show="showSearch">
+        <el-form :model="state.queryForm" ref="queryRef" :inline="true" @keyup.enter="getDataList">
+      <el-form-item label="用户ID" prop="userId" >
+        <el-input placeholder="请输入用户ID" v-model="state.queryForm.userId" />
+      </el-form-item>
+      <el-form-item label="交易ID，清仓前不变" prop="transactionId" >
+        <el-input placeholder="请输入交易ID，清仓前不变" v-model="state.queryForm.transactionId" />
+      </el-form-item>
+      <el-form-item label="股票代码" prop="code" >
+        <el-input placeholder="请输入股票代码" v-model="state.queryForm.code" />
+      </el-form-item>
+      <el-form-item label="交易日期" prop="dealDate" >
+        <el-input placeholder="请输入交易日期" v-model="state.queryForm.dealDate" />
+      </el-form-item>
+          <el-form-item>
+            <el-button icon="search" type="primary" @click="getDataList">
+              查询
+            </el-button>
+            <el-button icon="Refresh" @click="resetQuery">重置</el-button>
+          </el-form-item>
+        </el-form>
+      </el-row>
       <el-row>
         <div class="mb8" style="width: 100%">
           <el-button icon="folder-add" type="primary" class="ml10" @click="formDialogRef.openDialog()"
@@ -23,6 +45,7 @@
         <el-table-column type="selection" width="40" align="center" />
         <el-table-column type="index" label="#" width="40" />
           <el-table-column prop="userId" label="用户ID"  show-overflow-tooltip/>
+          <el-table-column prop="transactionId" label="交易ID，清仓前不变"  show-overflow-tooltip/>
           <el-table-column prop="code" label="股票代码"  show-overflow-tooltip/>
           <el-table-column prop="dealDate" label="交易日期"  show-overflow-tooltip/>
           <el-table-column prop="dealTime" label="成交时间"  show-overflow-tooltip/>

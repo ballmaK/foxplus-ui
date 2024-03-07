@@ -16,35 +16,29 @@
       </el-col>
 
     <el-col :span="12" class="mb20">
-      <el-form-item label="角色ID" prop="roleId">
-        <el-input v-model="form.roleId" placeholder="请输入角色ID"/>
+      <el-form-item label="积分变动" prop="pointsChange">
+        <el-input v-model="form.pointsChange" placeholder="请输入积分变动"/>
       </el-form-item>
       </el-col>
 
     <el-col :span="12" class="mb20">
-      <el-form-item label="角色编码" prop="roleCode">
-        <el-input v-model="form.roleCode" placeholder="请输入角色编码"/>
+      <el-form-item label="积分余额" prop="pointsBalance">
+        <el-input v-model="form.pointsBalance" placeholder="请输入积分余额"/>
       </el-form-item>
       </el-col>
 
     <el-col :span="12" class="mb20">
-      <el-form-item label="角色名称" prop="roleName">
-        <el-input v-model="form.roleName" placeholder="请输入角色名称"/>
+      <el-form-item label="有效期" prop="expireTime">
+            <el-date-picker type="datetime" placeholder="请选择有效期" v-model="form.expireTime" :value-format="dateTimeStr"></el-date-picker>
       </el-form-item>
       </el-col>
+
 
     <el-col :span="12" class="mb20">
-      <el-form-item label="角色描述" prop="roleDesc">
-        <el-input v-model="form.roleDesc" placeholder="请输入角色描述"/>
+      <el-form-item label="变动原因" prop="changeReason">
+        <el-input v-model="form.changeReason" placeholder="请输入变动原因"/>
       </el-form-item>
       </el-col>
-
-    <el-col :span="12" class="mb20">
-      <el-form-item label="失效时间" prop="expireTime">
-            <el-date-picker type="datetime" placeholder="请选择失效时间" v-model="form.expireTime" :value-format="dateTimeStr"></el-date-picker>
-      </el-form-item>
-      </el-col>
-
 
 			</el-row>
       </el-form>
@@ -57,10 +51,10 @@
     </el-dialog>
 </template>
 
-<script setup lang="ts" name="AppUserRoleDialog">
+<script setup lang="ts" name="AppUserPointsDialog">
 import { useDict } from '/@/hooks/dict';
 import { useMessage } from "/@/hooks/message";
-import { getObj, addObj, putObj } from '/@/api/foxplus-app-backend/appUserRole'
+import { getObj, addObj, putObj } from '/@/api/foxplus-app-backend/appUserPoints'
 import { rule } from '/@/utils/validate';
 const emit = defineEmits(['refresh']);
 
@@ -75,22 +69,20 @@ const form = reactive({
 		id:'',
 	  userId: '',
 	  username: '',
-	  roleId: '',
-	  roleCode: '',
-	  roleName: '',
-	  roleDesc: '',
+	  pointsChange: '',
+	  pointsBalance: '',
 	  expireTime: '',
+	  changeReason: '',
 });
 
 // 定义校验规则
 const dataRules = ref({
         userId: [{required: true, message: '用户ID不能为空', trigger: 'blur'}],
         username: [{required: true, message: '用户名不能为空', trigger: 'blur'}],
-        roleId: [{required: true, message: '角色ID不能为空', trigger: 'blur'}],
-        roleCode: [{required: true, message: '角色编码不能为空', trigger: 'blur'}],
-        roleName: [{required: true, message: '角色名称不能为空', trigger: 'blur'}],
-        roleDesc: [{required: true, message: '角色描述不能为空', trigger: 'blur'}],
-        expireTime: [{required: true, message: '失效时间不能为空', trigger: 'blur'}],
+        pointsChange: [{required: true, message: '积分变动不能为空', trigger: 'blur'}],
+        pointsBalance: [{required: true, message: '积分余额不能为空', trigger: 'blur'}],
+        expireTime: [{required: true, message: '有效期不能为空', trigger: 'blur'}],
+        changeReason: [{required: true, message: '变动原因不能为空', trigger: 'blur'}],
 })
 
 // 打开弹窗
@@ -103,10 +95,10 @@ const openDialog = (id: string) => {
 		dataFormRef.value?.resetFields();
 	});
 
-  // 获取appUserRole信息
+  // 获取appUserPoints信息
   if (id) {
     form.id = id
-    getappUserRoleData(id)
+    getappUserPointsData(id)
   }
 };
 
@@ -130,7 +122,7 @@ const onSubmit = async () => {
 
 
 // 初始化表单数据
-const getappUserRoleData = (id: string) => {
+const getappUserPointsData = (id: string) => {
   // 获取数据
   loading.value = true
   getObj(id).then((res: any) => {

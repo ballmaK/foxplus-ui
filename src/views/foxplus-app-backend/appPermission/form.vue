@@ -1,29 +1,23 @@
 <template>
-    <el-dialog :title="form.roleId ? '编辑' : '新增'" v-model="visible"
+    <el-dialog :title="form.permissionId ? '编辑' : '新增'" v-model="visible"
       :close-on-click-modal="false" draggable>
       <el-form ref="dataFormRef" :model="form" :rules="dataRules" formDialogRef label-width="90px" v-loading="loading">
        <el-row :gutter="24">
     <el-col :span="12" class="mb20">
-      <el-form-item label="角色名称" prop="roleName">
-        <el-input v-model="form.roleName" placeholder="请输入角色名称"/>
+      <el-form-item label="权限编码" prop="permissionCode">
+        <el-input v-model="form.permissionCode" placeholder="请输入权限编码"/>
       </el-form-item>
       </el-col>
 
     <el-col :span="12" class="mb20">
-      <el-form-item label="角色编码" prop="roleCode">
-        <el-input v-model="form.roleCode" placeholder="请输入角色编码"/>
+      <el-form-item label="权限资源" prop="permissionResource">
+        <el-input v-model="form.permissionResource" placeholder="请输入权限资源"/>
       </el-form-item>
       </el-col>
 
     <el-col :span="12" class="mb20">
-      <el-form-item label="角色描述" prop="roleDesc">
-        <el-input v-model="form.roleDesc" placeholder="请输入角色描述"/>
-      </el-form-item>
-      </el-col>
-
-    <el-col :span="12" class="mb20">
-      <el-form-item label="所需积分" prop="requiredPoints">
-        <el-input v-model="form.requiredPoints" placeholder="请输入所需积分"/>
+      <el-form-item label="角色描述" prop="permissionDesc">
+        <el-input v-model="form.permissionDesc" placeholder="请输入角色描述"/>
       </el-form-item>
       </el-col>
 
@@ -38,10 +32,10 @@
     </el-dialog>
 </template>
 
-<script setup lang="ts" name="AppRoleDialog">
+<script setup lang="ts" name="AppPermissionDialog">
 import { useDict } from '/@/hooks/dict';
 import { useMessage } from "/@/hooks/message";
-import { getObj, addObj, putObj } from '/@/api/foxplus-app-backend/appRole'
+import { getObj, addObj, putObj } from '/@/api/foxplus-app-backend/appPermission'
 import { rule } from '/@/utils/validate';
 const emit = defineEmits(['refresh']);
 
@@ -53,35 +47,33 @@ const loading = ref(false)
 
 // 提交表单数据
 const form = reactive({
-		roleId:'',
-	  roleName: '',
-	  roleCode: '',
-	  roleDesc: '',
-	  requiredPoints: '',
+		permissionId:'',
+	  permissionCode: '',
+	  permissionResource: '',
+	  permissionDesc: '',
 });
 
 // 定义校验规则
 const dataRules = ref({
-        roleName: [{required: true, message: '角色名称不能为空', trigger: 'blur'}],
-        roleCode: [{required: true, message: '角色编码不能为空', trigger: 'blur'}],
-        roleDesc: [{required: true, message: '角色描述不能为空', trigger: 'blur'}],
-        requiredPoints: [{required: true, message: '所需积分不能为空', trigger: 'blur'}],
+        permissionCode: [{required: true, message: '权限编码不能为空', trigger: 'blur'}],
+        permissionResource: [{required: true, message: '权限资源不能为空', trigger: 'blur'}],
+        permissionDesc: [{required: true, message: '角色描述不能为空', trigger: 'blur'}],
 })
 
 // 打开弹窗
 const openDialog = (id: string) => {
   visible.value = true
-  form.roleId = ''
+  form.permissionId = ''
 
   // 重置表单数据
 	nextTick(() => {
 		dataFormRef.value?.resetFields();
 	});
 
-  // 获取appRole信息
+  // 获取appPermission信息
   if (id) {
-    form.roleId = id
-    getappRoleData(id)
+    form.permissionId = id
+    getappPermissionData(id)
   }
 };
 
@@ -92,8 +84,8 @@ const onSubmit = async () => {
 
 	try {
     loading.value = true;
-		form.roleId ? await putObj(form) : await addObj(form);
-		useMessage().success(form.roleId ? '修改成功' : '添加成功');
+		form.permissionId ? await putObj(form) : await addObj(form);
+		useMessage().success(form.permissionId ? '修改成功' : '添加成功');
 		visible.value = false;
 		emit('refresh');
 	} catch (err: any) {
@@ -105,7 +97,7 @@ const onSubmit = async () => {
 
 
 // 初始化表单数据
-const getappRoleData = (id: string) => {
+const getappPermissionData = (id: string) => {
   // 获取数据
   loading.value = true
   getObj(id).then((res: any) => {

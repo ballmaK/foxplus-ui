@@ -1,0 +1,28 @@
+export default {
+   appUserPoints: {
+        index: '#',
+        importappUserPointsTip: '导入用户积分表',
+        id: '主键ID',
+        userId: '用户ID',
+        username: '用户名',
+        pointsChange: '积分变动',
+        pointsBalance: '积分余额',
+        expireTime: '有效期',
+        changeReason: '变动原因',
+        createBy: '创建人',
+        createTime: '创建时间',
+        updateBy: '修改人',
+        updateTime: ' updateTime',
+        inputIdTip: '请输入主键ID',
+        inputUserIdTip: '请输入用户ID',
+        inputUsernameTip: '请输入用户名',
+        inputPointsChangeTip: '请输入积分变动',
+        inputPointsBalanceTip: '请输入积分余额',
+        inputExpireTimeTip: '请输入有效期',
+        inputChangeReasonTip: '请输入变动原因',
+        inputCreateByTip: '请输入创建人',
+        inputCreateTimeTip: '请输入创建时间',
+        inputUpdateByTip: '请输入修改人',
+        inputUpdateTimeTip: '请输入 updateTime',
+    }
+}

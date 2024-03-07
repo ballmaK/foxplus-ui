@@ -1,0 +1,28 @@
+export default {
+   appUserPoints: {
+        index: '#',
+        importappUserPointsTip: 'import AppUserPoints',
+        id: 'id',
+        userId: 'userId',
+        username: 'username',
+        pointsChange: 'pointsChange',
+        pointsBalance: 'pointsBalance',
+        expireTime: 'expireTime',
+        changeReason: 'changeReason',
+        createBy: 'createBy',
+        createTime: 'createTime',
+        updateBy: 'updateBy',
+        updateTime: 'updateTime',
+        inputIdTip: 'input id',
+        inputUserIdTip: 'input userId',
+        inputUsernameTip: 'input username',
+        inputPointsChangeTip: 'input pointsChange',
+        inputPointsBalanceTip: 'input pointsBalance',
+        inputExpireTimeTip: 'input expireTime',
+        inputChangeReasonTip: 'input changeReason',
+        inputCreateByTip: 'input createBy',
+        inputCreateTimeTip: 'input createTime',
+        inputUpdateByTip: 'input updateBy',
+        inputUpdateTimeTip: 'input updateTime',
+    }
+}
