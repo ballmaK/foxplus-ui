@@ -16,6 +16,12 @@
       </el-col>
 
     <el-col :span="12" class="mb20">
+      <el-form-item label="转账时间" prop="transTime">
+        <el-input v-model="form.transTime" placeholder="请输入转账时间"/>
+      </el-form-item>
+      </el-col>
+
+    <el-col :span="12" class="mb20">
       <el-form-item label="发生额(元)" prop="amount">
         <el-input v-model="form.amount" placeholder="请输入发生额(元)"/>
       </el-form-item>
@@ -69,6 +75,7 @@ const form = reactive({
 		id:'',
 	  userId: '',
 	  transDate: '',
+	  transTime: '',
 	  amount: '',
 	  type: '',
 	  cash: '',
@@ -79,6 +86,7 @@ const form = reactive({
 const dataRules = ref({
         userId: [{required: true, message: '用户ID不能为空', trigger: 'blur'}],
         transDate: [{required: true, message: '转账日期不能为空', trigger: 'blur'}],
+        transTime: [{required: true, message: '转账时间不能为空', trigger: 'blur'}],
         amount: [{required: true, message: '发生额(元)不能为空', trigger: 'blur'}],
         type: [{required: true, message: '交易类型，0转入，1转出不能为空', trigger: 'blur'}],
         cash: [{required: true, message: '可用现金不能为空', trigger: 'blur'}],

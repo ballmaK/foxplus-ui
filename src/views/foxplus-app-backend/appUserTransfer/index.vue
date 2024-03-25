@@ -43,6 +43,7 @@
         <el-table-column type="index" label="#" width="40" />
           <el-table-column prop="userId" label="用户ID"  show-overflow-tooltip/>
           <el-table-column prop="transDate" label="转账日期"  show-overflow-tooltip/>
+          <el-table-column prop="transTime" label="转账时间"  show-overflow-tooltip/>
           <el-table-column prop="amount" label="发生额(元)"  show-overflow-tooltip/>
           <el-table-column prop="type" label="交易类型，0转入，1转出" show-overflow-tooltip>
       <template #default="scope">

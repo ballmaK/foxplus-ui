@@ -6,8 +6,8 @@
       <el-form-item label="用户ID" prop="userId" >
         <el-input placeholder="请输入用户ID" v-model="state.queryForm.userId" />
       </el-form-item>
-      <el-form-item label="券商名称" prop="brokerName" >
-        <el-input placeholder="请输入券商名称" v-model="state.queryForm.brokerName" />
+      <el-form-item label="交易日期" prop="dealDate" >
+        <el-input placeholder="请输入交易日期" v-model="state.queryForm.dealDate" />
       </el-form-item>
           <el-form-item>
             <el-button icon="search" type="primary" @click="getDataList">
@@ -20,14 +20,14 @@
       <el-row>
         <div class="mb8" style="width: 100%">
           <el-button icon="folder-add" type="primary" class="ml10" @click="formDialogRef.openDialog()"
-            v-auth="'foxplus-app-backend_appStockUserConfig_add'">
+            v-auth="'foxplus-app-backend_appStockDealSettle_add'">
             新 增
           </el-button>
           <el-button plain :disabled="multiple" icon="Delete" type="primary"
-            v-auth="'foxplus-app-backend_appStockUserConfig_del'" @click="handleDelete(selectObjs)">
+            v-auth="'foxplus-app-backend_appStockDealSettle_del'" @click="handleDelete(selectObjs)">
             删除
           </el-button>
-          <right-toolbar v-model:showSearch="showSearch" :export="'foxplus-app-backend_appStockUserConfig_export'"
+          <right-toolbar v-model:showSearch="showSearch" :export="'foxplus-app-backend_appStockDealSettle_export'"
                 @exportExcel="exportExcel" class="ml10 mr20" style="float: right;"
             @queryTable="getDataList"></right-toolbar>
         </div>
@@ -39,28 +39,46 @@
         <el-table-column type="selection" width="40" align="center" />
         <el-table-column type="index" label="#" width="40" />
           <el-table-column prop="userId" label="用户ID"  show-overflow-tooltip/>
-          <el-table-column prop="brokerId" label="券商ID"  show-overflow-tooltip/>
-          <el-table-column prop="brokerAccount" label="券商账户"  show-overflow-tooltip/>
-          <el-table-column prop="brokerAccountAlias" label="券商名称别名"  show-overflow-tooltip/>
-          <el-table-column prop="brokerName" label="券商名称"  show-overflow-tooltip/>
-          <el-table-column prop="cash" label="初始现金(元)"  show-overflow-tooltip/>
+          <el-table-column prop="transactionId" label="交易ID，清仓前不变"  show-overflow-tooltip/>
+          <el-table-column prop="code" label="股票代码"  show-overflow-tooltip/>
+          <el-table-column prop="dealDate" label="交易日期"  show-overflow-tooltip/>
+          <el-table-column prop="dealTime" label="成交时间"  show-overflow-tooltip/>
+          <el-table-column prop="dealPrice" label="成交价格"  show-overflow-tooltip/>
+          <el-table-column prop="dealAmount" label="交易金额"  show-overflow-tooltip/>
+          <el-table-column prop="holdVolume" label="交易后持仓"  show-overflow-tooltip/>
+          <el-table-column prop="validVolume" label="交易后可用持仓"  show-overflow-tooltip/>
+          <el-table-column prop="dealVolume" label="成交数量"  show-overflow-tooltip/>
+          <el-table-column prop="dealFee" label="交易费用"  show-overflow-tooltip/>
+          <el-table-column prop="otherFee" label="其他费用"  show-overflow-tooltip/>
           <el-table-column prop="brokerage" label="经手费"  show-overflow-tooltip/>
-          <el-table-column prop="commission" label="佣金"  show-overflow-tooltip/>
-          <el-table-column prop="clearProfit" label="清仓后盈利"  show-overflow-tooltip/>
-          <el-table-column prop="clearCostPrice" label="清仓后成本"  show-overflow-tooltip/>
-          <el-table-column prop="transferTax" label="过户费"  show-overflow-tooltip/>
           <el-table-column prop="stampDuty" label="印花税"  show-overflow-tooltip/>
-          <el-table-column prop="footerStyle" label="底部风格"  show-overflow-tooltip/>
-          <el-table-column prop="showHome" label="首页是否展示"  show-overflow-tooltip/>
-          <el-table-column prop="colorStyle" label="主题风格"  show-overflow-tooltip/>
-          <el-table-column prop="bindBankName" label="绑定银行名称"  show-overflow-tooltip/>
-          <el-table-column prop="bindBankPwd" label="绑定银行密码"  show-overflow-tooltip/>
-          <el-table-column prop="inUse" label="当前使用，0否，1是"  show-overflow-tooltip/>
+          <el-table-column prop="transferTax" label="过户费"  show-overflow-tooltip/>
+          <el-table-column prop="commission" label="佣金"  show-overflow-tooltip/>
+          <el-table-column prop="totalFee" label="总费用"  show-overflow-tooltip/>
+          <el-table-column prop="costBeforeDeal" label="交易前成本"  show-overflow-tooltip/>
+          <el-table-column prop="costAfterDeal" label="交易后成本"  show-overflow-tooltip/>
+          <el-table-column prop="dealProfit" label="交易盈亏"  show-overflow-tooltip/>
+          <el-table-column prop="cashBalance" label="现金余额"  show-overflow-tooltip/>
+          <el-table-column prop="dealType" label="交易类型" show-overflow-tooltip>
+      <template #default="scope">
+                <dict-tag :options="deal_type" :value="scope.row.dealType"></dict-tag>
+            </template>
+          </el-table-column>
+          <el-table-column prop="dealStatus" label="交易状态，0未结算，1已结算" show-overflow-tooltip>
+      <template #default="scope">
+                <dict-tag :options="deal_stock_deal_status" :value="scope.row.dealStatus"></dict-tag>
+            </template>
+          </el-table-column>
+          <el-table-column prop="dealDirection" label="交易方向，0买入，1卖出" show-overflow-tooltip>
+      <template #default="scope">
+                <dict-tag :options="deal_direction" :value="scope.row.dealDirection"></dict-tag>
+            </template>
+          </el-table-column>
         <el-table-column label="操作" width="150">
           <template #default="scope">
-            <el-button icon="edit-pen" text type="primary" v-auth="'foxplus-app-backend_appStockUserConfig_edit'"
+            <el-button icon="edit-pen" text type="primary" v-auth="'foxplus-app-backend_appStockDealSettle_edit'"
               @click="formDialogRef.openDialog(scope.row.id)">编辑</el-button>
-            <el-button icon="delete" text type="primary" v-auth="'foxplus-app-backend_appStockUserConfig_del'" @click="handleDelete([scope.row.id])">删除</el-button>
+            <el-button icon="delete" text type="primary" v-auth="'foxplus-app-backend_appStockDealSettle_del'" @click="handleDelete([scope.row.id])">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -73,9 +91,9 @@
   </div>
 </template>
 
-<script setup lang="ts" name="systemAppStockUserConfig">
+<script setup lang="ts" name="systemAppStockDealSettle">
 import { BasicTableProps, useTable } from "/@/hooks/table";
-import { fetchList, delObjs } from "/@/api/foxplus-app-backend/appStockUserConfig";
+import { fetchList, delObjs } from "/@/api/foxplus-app-backend/appStockDealSettle";
 import { useMessage, useMessageBox } from "/@/hooks/message";
 import { useDict } from '/@/hooks/dict';
 
@@ -83,6 +101,7 @@ import { useDict } from '/@/hooks/dict';
 const FormDialog = defineAsyncComponent(() => import('./form.vue'));
 // 定义查询字典
 
+const { deal_type,deal_stock_deal_status,deal_direction } = useDict('deal_type','deal_stock_deal_status','deal_direction')
 // 定义变量内容
 const formDialogRef = ref()
 // 搜索变量
@@ -118,7 +137,7 @@ const resetQuery = () => {
 
 // 导出excel
 const exportExcel = () => {
-  downBlobFile('/foxplus-app-backend/appStockUserConfig/export',Object.assign(state.queryForm, { ids: selectObjs }), 'appStockUserConfig.xlsx')
+  downBlobFile('/foxplus-app-backend/appStockDealSettle/export',Object.assign(state.queryForm, { ids: selectObjs }), 'appStockDealSettle.xlsx')
 }
 
 // 多选事件

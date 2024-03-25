@@ -10,8 +10,20 @@
       </el-col>
 
     <el-col :span="12" class="mb20">
+      <el-form-item label="券商ID" prop="brokerId">
+        <el-input v-model="form.brokerId" placeholder="请输入券商ID"/>
+      </el-form-item>
+      </el-col>
+
+    <el-col :span="12" class="mb20">
       <el-form-item label="券商账户" prop="brokerAccount">
         <el-input v-model="form.brokerAccount" placeholder="请输入券商账户"/>
+      </el-form-item>
+      </el-col>
+
+    <el-col :span="12" class="mb20">
+      <el-form-item label="券商名称别名" prop="brokerAccountAlias">
+        <el-input v-model="form.brokerAccountAlias" placeholder="请输入券商名称别名"/>
       </el-form-item>
       </el-col>
 
@@ -122,13 +134,14 @@ const dataFormRef = ref();
 const visible = ref(false)
 const loading = ref(false)
 // 定义字典
-const { yes_no_type } = useDict('yes_no_type')
 
 // 提交表单数据
 const form = reactive({
 		id:'',
 	  userId: '',
+	  brokerId: '',
 	  brokerAccount: '',
+	  brokerAccountAlias: '',
 	  brokerName: '',
 	  cash: '',
 	  brokerage: '',
@@ -148,7 +161,9 @@ const form = reactive({
 // 定义校验规则
 const dataRules = ref({
         userId: [{required: true, message: '用户ID不能为空', trigger: 'blur'}],
+        brokerId: [{required: true, message: '券商ID不能为空', trigger: 'blur'}],
         brokerAccount: [{required: true, message: '券商账户不能为空', trigger: 'blur'}],
+        brokerAccountAlias: [{required: true, message: '券商名称别名不能为空', trigger: 'blur'}],
         brokerName: [{required: true, message: '券商名称不能为空', trigger: 'blur'}],
         cash: [{required: true, message: '初始现金(元)不能为空', trigger: 'blur'}],
         brokerage: [{required: true, message: '经手费不能为空', trigger: 'blur'}],

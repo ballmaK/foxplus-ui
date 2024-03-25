@@ -4,33 +4,14 @@
       <el-form ref="dataFormRef" :model="form" :rules="dataRules" formDialogRef label-width="90px" v-loading="loading">
        <el-row :gutter="24">
     <el-col :span="12" class="mb20">
-      <el-form-item label="用户ID" prop="userId">
-        <el-input v-model="form.userId" placeholder="请输入用户ID"/>
+      <el-form-item label="券商名称" prop="brokerName">
+        <el-input v-model="form.brokerName" placeholder="请输入券商名称"/>
       </el-form-item>
       </el-col>
 
     <el-col :span="12" class="mb20">
-      <el-form-item label="用户名" prop="username">
-        <el-input v-model="form.username" placeholder="请输入用户名"/>
-      </el-form-item>
-      </el-col>
-
-    <el-col :span="12" class="mb20">
-      <el-form-item label="积分变动" prop="pointsChange">
-        <el-input v-model="form.pointsChange" placeholder="请输入积分变动"/>
-      </el-form-item>
-      </el-col>
-
-    <el-col :span="12" class="mb20">
-      <el-form-item label="有效期" prop="expireTime">
-            <el-date-picker type="datetime" placeholder="请选择有效期" v-model="form.expireTime" :value-format="dateTimeStr"></el-date-picker>
-      </el-form-item>
-      </el-col>
-
-
-    <el-col :span="12" class="mb20">
-      <el-form-item label="变动原因" prop="changeReason">
-        <el-input v-model="form.changeReason" placeholder="请输入变动原因"/>
+      <el-form-item label="券商图标(base64)" prop="brokerIcon">
+        <el-input v-model="form.brokerIcon" placeholder="请输入券商图标(base64)"/>
       </el-form-item>
       </el-col>
 
@@ -45,10 +26,10 @@
     </el-dialog>
 </template>
 
-<script setup lang="ts" name="AppUserPointsDialog">
+<script setup lang="ts" name="AppBrokerInfoDialog">
 import { useDict } from '/@/hooks/dict';
 import { useMessage } from "/@/hooks/message";
-import { getObj, addObj, putObj } from '/@/api/foxplus-app-backend/appUserPoints'
+import { getObj, addObj, putObj } from '/@/api/foxplus-app-backend/appBrokerInfo'
 import { rule } from '/@/utils/validate';
 const emit = defineEmits(['refresh']);
 
@@ -61,20 +42,14 @@ const loading = ref(false)
 // 提交表单数据
 const form = reactive({
 		id:'',
-	  userId: '',
-	  username: '',
-	  pointsChange: '',
-	  expireTime: '',
-	  changeReason: '',
+	  brokerName: '',
+	  brokerIcon: '',
 });
 
 // 定义校验规则
 const dataRules = ref({
-        userId: [{required: true, message: '用户ID不能为空', trigger: 'blur'}],
-        username: [{required: true, message: '用户名不能为空', trigger: 'blur'}],
-        pointsChange: [{required: true, message: '积分变动不能为空', trigger: 'blur'}],
-        expireTime: [{required: true, message: '有效期不能为空', trigger: 'blur'}],
-        changeReason: [{required: true, message: '变动原因不能为空', trigger: 'blur'}],
+        brokerName: [{required: true, message: '券商名称不能为空', trigger: 'blur'}],
+        brokerIcon: [{required: true, message: '券商图标(base64)不能为空', trigger: 'blur'}],
 })
 
 // 打开弹窗
@@ -87,10 +62,10 @@ const openDialog = (id: string) => {
 		dataFormRef.value?.resetFields();
 	});
 
-  // 获取appUserPoints信息
+  // 获取appBrokerInfo信息
   if (id) {
     form.id = id
-    getappUserPointsData(id)
+    getappBrokerInfoData(id)
   }
 };
 
@@ -114,7 +89,7 @@ const onSubmit = async () => {
 
 
 // 初始化表单数据
-const getappUserPointsData = (id: string) => {
+const getappBrokerInfoData = (id: string) => {
   // 获取数据
   loading.value = true
   getObj(id).then((res: any) => {

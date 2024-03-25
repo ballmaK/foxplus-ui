@@ -9,8 +9,14 @@
       <el-form-item label="用户名" prop="username" >
         <el-input placeholder="请输入用户名" v-model="state.queryForm.username" />
       </el-form-item>
-      <el-form-item label="积分余额" prop="pointsBalance" >
-        <el-input placeholder="请输入积分余额" v-model="state.queryForm.pointsBalance" />
+      <el-form-item label="积分变动" prop="pointsChange" >
+        <el-input placeholder="请输入积分变动" v-model="state.queryForm.pointsChange" />
+      </el-form-item>
+      <el-form-item label="有效期" prop="expireTime" >
+        <el-input placeholder="请输入有效期" v-model="state.queryForm.expireTime" />
+      </el-form-item>
+      <el-form-item label="变动原因" prop="changeReason" >
+        <el-input placeholder="请输入变动原因" v-model="state.queryForm.changeReason" />
       </el-form-item>
           <el-form-item>
             <el-button icon="search" type="primary" @click="getDataList">
@@ -44,7 +50,6 @@
           <el-table-column prop="userId" label="用户ID"  show-overflow-tooltip/>
           <el-table-column prop="username" label="用户名"  show-overflow-tooltip/>
           <el-table-column prop="pointsChange" label="积分变动"  show-overflow-tooltip/>
-          <el-table-column prop="pointsBalance" label="积分余额"  show-overflow-tooltip/>
           <el-table-column prop="expireTime" label="有效期"  show-overflow-tooltip/>
           <el-table-column prop="changeReason" label="变动原因"  show-overflow-tooltip/>
         <el-table-column label="操作" width="150">
