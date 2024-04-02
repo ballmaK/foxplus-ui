@@ -12,6 +12,7 @@ export default {
         createTime: '创建时间',
         updateBy: '修改人',
         updateTime: ' updateTime',
+        delFlag: ' delFlag',
         inputIdTip: '请输入主键ID',
         inputUserIdTip: '请输入用户ID',
         inputUsernameTip: '请输入用户名',
@@ -22,5 +23,6 @@ export default {
         inputCreateTimeTip: '请输入创建时间',
         inputUpdateByTip: '请输入修改人',
         inputUpdateTimeTip: '请输入 updateTime',
+        inputDelFlagTip: '请输入 delFlag',
     }
 }

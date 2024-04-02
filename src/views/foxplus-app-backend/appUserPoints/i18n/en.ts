@@ -12,6 +12,7 @@ export default {
         createTime: 'createTime',
         updateBy: 'updateBy',
         updateTime: 'updateTime',
+        delFlag: 'delFlag',
         inputIdTip: 'input id',
         inputUserIdTip: 'input userId',
         inputUsernameTip: 'input username',
@@ -22,5 +23,6 @@ export default {
         inputCreateTimeTip: 'input createTime',
         inputUpdateByTip: 'input updateBy',
         inputUpdateTimeTip: 'input updateTime',
+        inputDelFlagTip: 'input delFlag',
     }
 }
