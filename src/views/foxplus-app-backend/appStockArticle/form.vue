@@ -4,14 +4,44 @@
       <el-form ref="dataFormRef" :model="form" :rules="dataRules" formDialogRef label-width="90px" v-loading="loading">
        <el-row :gutter="24">
     <el-col :span="12" class="mb20">
+      <el-form-item label="标题" prop="title">
+        <el-input v-model="form.title" placeholder="请输入标题"/>
+      </el-form-item>
+      </el-col>
+
+    <el-col :span="12" class="mb20">
+      <el-form-item label="概要" prop="summary">
+        <el-input v-model="form.summary" placeholder="请输入概要"/>
+      </el-form-item>
+      </el-col>
+
+    <el-col :span="12" class="mb20">
+      <el-form-item label="存储富媒体内容的HTML" prop="content">
+        <el-input v-model="form.content" placeholder="请输入存储富媒体内容的HTML"/>
+      </el-form-item>
+      </el-col>
+
+    <el-col :span="12" class="mb20">
       <el-form-item label="用户ID" prop="userId">
         <el-input v-model="form.userId" placeholder="请输入用户ID"/>
       </el-form-item>
       </el-col>
 
     <el-col :span="12" class="mb20">
-      <el-form-item label="自选股编码" prop="code">
-        <el-input v-model="form.code" placeholder="请输入自选股编码"/>
+      <el-form-item label="发布时间" prop="publishDate">
+        <el-input v-model="form.publishDate" placeholder="请输入发布时间"/>
+      </el-form-item>
+      </el-col>
+
+    <el-col :span="12" class="mb20">
+      <el-form-item label="是否发布" prop="isPublished">
+        <el-input v-model="form.isPublished" placeholder="请输入是否发布"/>
+      </el-form-item>
+      </el-col>
+
+    <el-col :span="12" class="mb20">
+      <el-form-item label="封面图片文件路径或URL" prop="coverImage">
+        <el-input v-model="form.coverImage" placeholder="请输入封面图片文件路径或URL"/>
       </el-form-item>
       </el-col>
 
@@ -26,10 +56,10 @@
     </el-dialog>
 </template>
 
-<script setup lang="ts" name="AppUserStockDialog">
+<script setup lang="ts" name="AppStockArticleDialog">
 import { useDict } from '/@/hooks/dict';
 import { useMessage } from "/@/hooks/message";
-import { getObj, addObj, putObj } from '/@/api/foxplus-app-backend/appUserStock'
+import { getObj, addObj, putObj } from '/@/api/foxplus-app-backend/appStockArticle'
 import { rule } from '/@/utils/validate';
 const emit = defineEmits(['refresh']);
 
@@ -42,14 +72,24 @@ const loading = ref(false)
 // 提交表单数据
 const form = reactive({
 		id:'',
+	  title: '',
+	  summary: '',
+	  content: '',
 	  userId: '',
-	  code: '',
+	  publishDate: '',
+	  isPublished: '',
+	  coverImage: '',
 });
 
 // 定义校验规则
 const dataRules = ref({
+        title: [{required: true, message: '标题不能为空', trigger: 'blur'}],
+        summary: [{required: true, message: '概要不能为空', trigger: 'blur'}],
+        content: [{required: true, message: '存储富媒体内容的HTML不能为空', trigger: 'blur'}],
         userId: [{required: true, message: '用户ID不能为空', trigger: 'blur'}],
-        code: [{required: true, message: '自选股编码不能为空', trigger: 'blur'}],
+        publishDate: [{required: true, message: '发布时间不能为空', trigger: 'blur'}],
+        isPublished: [{required: true, message: '是否发布不能为空', trigger: 'blur'}],
+        coverImage: [{required: true, message: '封面图片文件路径或URL不能为空', trigger: 'blur'}],
 })
 
 // 打开弹窗
@@ -62,10 +102,10 @@ const openDialog = (id: string) => {
 		dataFormRef.value?.resetFields();
 	});
 
-  // 获取appUserStock信息
+  // 获取appStockArticle信息
   if (id) {
     form.id = id
-    getappUserStockData(id)
+    getappStockArticleData(id)
   }
 };
 
@@ -89,7 +129,7 @@ const onSubmit = async () => {
 
 
 // 初始化表单数据
-const getappUserStockData = (id: string) => {
+const getappStockArticleData = (id: string) => {
   // 获取数据
   loading.value = true
   getObj(id).then((res: any) => {

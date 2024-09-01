@@ -4,14 +4,14 @@
       <el-row>
         <div class="mb8" style="width: 100%">
           <el-button icon="folder-add" type="primary" class="ml10" @click="formDialogRef.openDialog()"
-            v-auth="'foxplus-app-backend_appUserStock_add'">
+            v-auth="'foxplus-app-backend_appUserStockFavorite_add'">
             新 增
           </el-button>
           <el-button plain :disabled="multiple" icon="Delete" type="primary"
-            v-auth="'foxplus-app-backend_appUserStock_del'" @click="handleDelete(selectObjs)">
+            v-auth="'foxplus-app-backend_appUserStockFavorite_del'" @click="handleDelete(selectObjs)">
             删除
           </el-button>
-          <right-toolbar v-model:showSearch="showSearch" :export="'foxplus-app-backend_appUserStock_export'"
+          <right-toolbar v-model:showSearch="showSearch" :export="'foxplus-app-backend_appUserStockFavorite_export'"
                 @exportExcel="exportExcel" class="ml10 mr20" style="float: right;"
             @queryTable="getDataList"></right-toolbar>
         </div>
@@ -26,9 +26,9 @@
           <el-table-column prop="code" label="自选股编码"  show-overflow-tooltip/>
         <el-table-column label="操作" width="150">
           <template #default="scope">
-            <el-button icon="edit-pen" text type="primary" v-auth="'foxplus-app-backend_appUserStock_edit'"
+            <el-button icon="edit-pen" text type="primary" v-auth="'foxplus-app-backend_appUserStockFavorite_edit'"
               @click="formDialogRef.openDialog(scope.row.id)">编辑</el-button>
-            <el-button icon="delete" text type="primary" v-auth="'foxplus-app-backend_appUserStock_del'" @click="handleDelete([scope.row.id])">删除</el-button>
+            <el-button icon="delete" text type="primary" v-auth="'foxplus-app-backend_appUserStockFavorite_del'" @click="handleDelete([scope.row.id])">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -41,9 +41,9 @@
   </div>
 </template>
 
-<script setup lang="ts" name="systemAppUserStock">
+<script setup lang="ts" name="systemAppUserStockFavorite">
 import { BasicTableProps, useTable } from "/@/hooks/table";
-import { fetchList, delObjs } from "/@/api/foxplus-app-backend/appUserStock";
+import { fetchList, delObjs } from "/@/api/foxplus-app-backend/appUserStockFavorite";
 import { useMessage, useMessageBox } from "/@/hooks/message";
 import { useDict } from '/@/hooks/dict';
 
@@ -86,7 +86,7 @@ const resetQuery = () => {
 
 // 导出excel
 const exportExcel = () => {
-  downBlobFile('/foxplus-app-backend/appUserStock/export',Object.assign(state.queryForm, { ids: selectObjs }), 'appUserStock.xlsx')
+  downBlobFile('/foxplus-app-backend/appUserStockFavorite/export',Object.assign(state.queryForm, { ids: selectObjs }), 'appUserStockFavorite.xlsx')
 }
 
 // 多选事件

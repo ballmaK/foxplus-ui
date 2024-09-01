@@ -1,7 +1,7 @@
 export default {
-   appUserStock: {
+   appUserStockFavorite: {
         index: '#',
-        importappUserStockTip: 'import AppUserStock',
+        importappUserStockFavoriteTip: 'import AppUserStockFavorite',
         id: 'id',
         userId: 'userId',
         code: 'code',

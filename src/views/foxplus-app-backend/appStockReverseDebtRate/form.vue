@@ -4,14 +4,20 @@
       <el-form ref="dataFormRef" :model="form" :rules="dataRules" formDialogRef label-width="90px" v-loading="loading">
        <el-row :gutter="24">
     <el-col :span="12" class="mb20">
-      <el-form-item label="用户ID" prop="userId">
-        <el-input v-model="form.userId" placeholder="请输入用户ID"/>
+      <el-form-item label="交易日" prop="tradeDate">
+        <el-input v-model="form.tradeDate" placeholder="请输入交易日"/>
       </el-form-item>
       </el-col>
 
     <el-col :span="12" class="mb20">
-      <el-form-item label="自选股编码" prop="code">
-        <el-input v-model="form.code" placeholder="请输入自选股编码"/>
+      <el-form-item label="收益率" prop="rate">
+        <el-input v-model="form.rate" placeholder="请输入收益率"/>
+      </el-form-item>
+      </el-col>
+
+    <el-col :span="12" class="mb20">
+      <el-form-item label="显示文字" prop="label">
+        <el-input v-model="form.label" placeholder="请输入显示文字"/>
       </el-form-item>
       </el-col>
 
@@ -26,10 +32,10 @@
     </el-dialog>
 </template>
 
-<script setup lang="ts" name="AppUserStockDialog">
+<script setup lang="ts" name="AppStockReverseDebtRateDialog">
 import { useDict } from '/@/hooks/dict';
 import { useMessage } from "/@/hooks/message";
-import { getObj, addObj, putObj } from '/@/api/foxplus-app-backend/appUserStock'
+import { getObj, addObj, putObj } from '/@/api/foxplus-app-backend/appStockReverseDebtRate'
 import { rule } from '/@/utils/validate';
 const emit = defineEmits(['refresh']);
 
@@ -42,14 +48,16 @@ const loading = ref(false)
 // 提交表单数据
 const form = reactive({
 		id:'',
-	  userId: '',
-	  code: '',
+	  tradeDate: '',
+	  rate: '',
+	  label: '',
 });
 
 // 定义校验规则
 const dataRules = ref({
-        userId: [{required: true, message: '用户ID不能为空', trigger: 'blur'}],
-        code: [{required: true, message: '自选股编码不能为空', trigger: 'blur'}],
+        tradeDate: [{required: true, message: '交易日不能为空', trigger: 'blur'}],
+        rate: [{required: true, message: '收益率不能为空', trigger: 'blur'}],
+        label: [{required: true, message: '显示文字不能为空', trigger: 'blur'}],
 })
 
 // 打开弹窗
@@ -62,10 +70,10 @@ const openDialog = (id: string) => {
 		dataFormRef.value?.resetFields();
 	});
 
-  // 获取appUserStock信息
+  // 获取appStockReverseDebtRate信息
   if (id) {
     form.id = id
-    getappUserStockData(id)
+    getappStockReverseDebtRateData(id)
   }
 };
 
@@ -89,7 +97,7 @@ const onSubmit = async () => {
 
 
 // 初始化表单数据
-const getappUserStockData = (id: string) => {
+const getappStockReverseDebtRateData = (id: string) => {
   // 获取数据
   loading.value = true
   getObj(id).then((res: any) => {

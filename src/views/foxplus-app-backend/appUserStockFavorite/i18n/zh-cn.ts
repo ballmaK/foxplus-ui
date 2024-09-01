@@ -1,7 +1,7 @@
 export default {
-   appUserStock: {
+   appUserStockFavorite: {
         index: '#',
-        importappUserStockTip: '导入用户自选股数据',
+        importappUserStockFavoriteTip: '导入用户自选股数据',
         id: '主键ID',
         userId: '用户ID',
         code: '自选股编码',

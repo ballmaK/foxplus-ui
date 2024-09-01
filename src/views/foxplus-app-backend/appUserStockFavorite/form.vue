@@ -26,10 +26,10 @@
     </el-dialog>
 </template>
 
-<script setup lang="ts" name="AppUserStockDialog">
+<script setup lang="ts" name="AppUserStockFavoriteDialog">
 import { useDict } from '/@/hooks/dict';
 import { useMessage } from "/@/hooks/message";
-import { getObj, addObj, putObj } from '/@/api/foxplus-app-backend/appUserStock'
+import { getObj, addObj, putObj } from '/@/api/foxplus-app-backend/appUserStockFavorite'
 import { rule } from '/@/utils/validate';
 const emit = defineEmits(['refresh']);
 
@@ -62,10 +62,10 @@ const openDialog = (id: string) => {
 		dataFormRef.value?.resetFields();
 	});
 
-  // 获取appUserStock信息
+  // 获取appUserStockFavorite信息
   if (id) {
     form.id = id
-    getappUserStockData(id)
+    getappUserStockFavoriteData(id)
   }
 };
 
@@ -89,7 +89,7 @@ const onSubmit = async () => {
 
 
 // 初始化表单数据
-const getappUserStockData = (id: string) => {
+const getappUserStockFavoriteData = (id: string) => {
   // 获取数据
   loading.value = true
   getObj(id).then((res: any) => {
