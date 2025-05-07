@@ -13,9 +13,11 @@
 	},
 	"dependencies": {
 		"@element-plus/icons-vue": "2.3.1",
+		"@smallwei/avue": "^3.4.7",
 		"@wangeditor/editor": "5.1.23",
 		"@wangeditor/editor-for-vue": "5.1.12",
 		"autoprefixer": "10.4.16",
+		"avue-plugin-ueditor": "^1.0.4",
 		"axios": "1.6.3",
 		"china-area-data": "^5.0.1",
 		"codemirror": "5.65.5",

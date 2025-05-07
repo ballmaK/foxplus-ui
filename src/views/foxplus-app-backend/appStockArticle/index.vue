@@ -1,117 +1,157 @@
 <template>
-  <div class="layout-padding">
-    <div class="layout-padding-auto layout-padding-view">
-      <el-row>
-        <div class="mb8" style="width: 100%">
-          <el-button icon="folder-add" type="primary" class="ml10" @click="formDialogRef.openDialog()"
-            v-auth="'foxplus-app-backend_appStockArticle_add'">
-            新 增
-          </el-button>
-          <el-button plain :disabled="multiple" icon="Delete" type="primary"
-            v-auth="'foxplus-app-backend_appStockArticle_del'" @click="handleDelete(selectObjs)">
-            删除
-          </el-button>
-          <right-toolbar v-model:showSearch="showSearch" :export="'foxplus-app-backend_appStockArticle_export'"
-                @exportExcel="exportExcel" class="ml10 mr20" style="float: right;"
-            @queryTable="getDataList"></right-toolbar>
-        </div>
-      </el-row>
-      <el-table :data="state.dataList" v-loading="state.loading" border 
-        :cell-style="tableStyle.cellStyle" :header-cell-style="tableStyle.headerCellStyle"
-				@selection-change="selectionChangHandle"
-        @sort-change="sortChangeHandle">
-        <el-table-column type="selection" width="40" align="center" />
-        <el-table-column type="index" label="#" width="40" />
-          <el-table-column prop="title" label="标题"  show-overflow-tooltip/>
-          <el-table-column prop="summary" label="概要"  show-overflow-tooltip/>
-          <el-table-column prop="userId" label="用户ID"  show-overflow-tooltip/>
-          <el-table-column prop="publishDate" label="发布时间"  show-overflow-tooltip/>
-          <el-table-column prop="isPublished" label="是否发布"  show-overflow-tooltip/>
-        <el-table-column label="操作" width="150">
-          <template #default="scope">
-            <el-button icon="edit-pen" text type="primary" v-auth="'foxplus-app-backend_appStockArticle_edit'"
-              @click="formDialogRef.openDialog(scope.row.id)">编辑</el-button>
-            <el-button icon="delete" text type="primary" v-auth="'foxplus-app-backend_appStockArticle_del'" @click="handleDelete([scope.row.id])">删除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-      <pagination @size-change="sizeChangeHandle" @current-change="currentChangeHandle" v-bind="state.pagination" />
-    </div>
-
-    <!-- 编辑、新增  -->
-    <form-dialog ref="formDialogRef" @refresh="getDataList(false)" />
-
-  </div>
+	<div class="avue-content">
+		<avue-crud
+			:table-loading="loading"
+			ref="crud"
+			v-model="form"
+			@on-load="onLoad"
+			@row-update="rowUpdate"
+			@row-save="rowSave"
+			@row-del="rowDel"
+			@refresh-change="refreshChange"
+			@size-change="sizeChange"
+			@current-change="currentChange"
+			:data="tableData"
+			:option="tableOption"
+			:before-open="beforeOpen"
+		></avue-crud>
+	</div>
 </template>
+<script setup lang="ts">
+import { reactive, ref } from 'vue';
+import { fetchList, addObj, putObj, getObj, delObjs } from '/@/api/foxplus-app-backend/appStockArticle';
+import { useMessage, useMessageBox } from '/@/hooks/message';
+import type { Pagination } from '/@/hooks/table';
 
-<script setup lang="ts" name="systemAppStockArticle">
-import { BasicTableProps, useTable } from "/@/hooks/table";
-import { fetchList, delObjs } from "/@/api/foxplus-app-backend/appStockArticle";
-import { useMessage, useMessageBox } from "/@/hooks/message";
-import { useDict } from '/@/hooks/dict';
-
-// 引入组件
-const FormDialog = defineAsyncComponent(() => import('./form.vue'));
-// 定义查询字典
-
-// 定义变量内容
-const formDialogRef = ref()
-// 搜索变量
-const queryRef = ref()
-const showSearch = ref(true)
-// 多选变量
-const selectObjs = ref([]) as any
-const multiple = ref(true)
-
-const state: BasicTableProps = reactive<BasicTableProps>({
-  queryForm: {},
-  pageList: fetchList
-})
-
-//  table hook
-const {
-  getDataList,
-  currentChangeHandle,
-  sizeChangeHandle,
-  sortChangeHandle,
-  downBlobFile,
-	tableStyle
-} = useTable(state)
-
-// 清空搜索条件
-const resetQuery = () => {
-  // 清空搜索条件
-  queryRef.value?.resetFields()
-  // 清空多选
-  selectObjs.value = []
-  getDataList()
+const crud = ref();
+let loading = ref<boolean>(false);
+let tableData = reactive([]);
+let form = reactive<any>({});
+let query = reactive({});
+let page = reactive<Pagination>({
+	current: 1,
+	size: 10,
+});
+const tableOption = reactive({
+	lazy: true,
+	simplePage: true,
+	searchGutter: 2,
+	column: [
+		{
+			label: '标题',
+			prop: 'title',
+			rules: [
+				{
+					required: true,
+					message: '请输入标题',
+					trigger: 'blur',
+				},
+			],
+		},
+		{
+			label: '概要',
+			prop: 'summary',
+			type: 'textarea',
+			span: 24,
+			minRows: 3,
+			rules: [
+				{
+					required: true,
+					message: '请输入概要',
+					trigger: 'blur',
+				},
+			],
+		},
+		{
+			label: '内容',
+			prop: 'content',
+			component: 'AvueUeditor',
+			span: 24,
+			minRows: 6,
+			rules: [
+				{
+					required: true,
+					message: '请输入内容',
+					trigger: 'blur',
+				},
+			],
+		},
+		{
+			label: '发布时间',
+			prop: 'publishDate',
+			type: 'date',
+			format: 'yyyy-MM-dd',
+			valueFormat: 'yyyy-MM-dd',
+			display: false,
+		},
+		{
+			label: '是否发布',
+			type: 'switch',
+			prop: 'isPublished',
+			value: 1,
+			dicData: [
+				{
+					label: '否',
+					value: 0,
+				},
+				{
+					label: '是',
+					value: 1,
+				},
+			],
+		},
+	],
+});
+/******************************************业务******************************* */
+async function onLoad(page: Pagination, params = {}) {
+	loading.value = true;
+	const res = await fetchList({ ...page, ...params });
+	tableData = res.data.records;
+	loading.value = false;
 }
-
-// 导出excel
-const exportExcel = () => {
-  downBlobFile('/foxplus-app-backend/appStockArticle/export',Object.assign(state.queryForm, { ids: selectObjs }), 'appStockArticle.xlsx')
+async function rowUpdate(row: any, done: any, loading: any) {
+	try {
+		await putObj(row);
+		useMessage().success('操作成功');
+		// 数据回调进行刷新
+		onLoad(page);
+		done(row);
+	} catch (error) {
+		window.console.log(error);
+		loading();
+	}
 }
-
-// 多选事件
-const selectionChangHandle = (objs: { id: string }[]) => {
-  selectObjs.value = objs.map(({ id }) => id);
-  multiple.value = !objs.length;
-};
-
-// 删除操作
-const handleDelete = async (ids: string[]) => {
-  try {
-    await useMessageBox().confirm('此操作将永久删除');
-  } catch {
-    return;
-  }
-
-  try {
-    await delObjs(ids);
-    getDataList();
-    useMessage().success('删除成功');
-  } catch (err: any) {
-    useMessage().error(err.msg);
-  }
-};
+async function rowSave(row: any, done: any, loading: any) {
+	try {
+		await addObj(row);
+		useMessage().success('操作成功');
+		// 数据回调进行刷新
+		done(row);
+	} catch (error) {
+		window.console.log(error);
+		loading();
+	}
+}
+async function beforeOpen(done: any, type: any) {
+	if (['edit', 'view'].includes(type)) {
+		const res = await getObj(form.id);
+		form = res.data;
+	}
+	done();
+}
+function refreshChange() {
+	onLoad(page, query);
+}
+function sizeChange(pageSize: number) {
+	page.size = pageSize;
+}
+function currentChange(currentPage: number) {
+	page.current = currentPage;
+}
+async function rowDel(row: any) {
+	await useMessageBox().confirm('确定将选择数据删除?');
+	await delObjs([row.id]);
+	onLoad(page);
+	useMessage().success('操作成功!');
+}
 </script>

@@ -17,6 +17,10 @@ import { parseTime, parseDate, dateTimeStr, dateStr, timeStr } from '/@/utils/fo
 // 布局工具
 import { Splitpanes, Pane } from 'splitpanes';
 import 'splitpanes/dist/splitpanes.css';
+// Avue配置
+import Avue from '@smallwei/avue';
+import AvueUeditor from 'avue-plugin-ueditor';
+import '@smallwei/avue/lib/index.css';
 
 const app = createApp(App);
 
@@ -30,6 +34,7 @@ app.component('UploadImg', UploadImg);
 app.component('Editor', Editor);
 app.component('Tip', Tip);
 app.component('DelWrap', DelWrap);
+app.component('avueUeditor', AvueUeditor);
 // 导入布局插件
 app.component('Splitpanes', Splitpanes);
 app.component('Pane', Pane);
@@ -49,4 +54,6 @@ app
 	.use(ElementPlus) // ElementPlus 全局引入
 	.use(ElementIcons) // elementIcons 图标全局引入
 	.use(i18n) // 国际化
+	.use(Avue) // Avue
+	.use(AvueUeditor) // 富文本
 	.mount('#app');

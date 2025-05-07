@@ -53,6 +53,11 @@
 		margin-right: 0px;
 	}
 }
+.avue-form__row {
+	.el-form-item:last-of-type {
+		margin-bottom: 18px !important;
+	}
+}
 
 // 修改数字输入框默认宽度为100%
 .el-input-number {
@@ -288,6 +293,11 @@
 
 			.el-dialog__body {
 				padding: 20px !important;
+			}
+		}
+		.avue-dialog {
+			.el-dialog__body {
+				padding: 20px 20px 60px !important;
 			}
 		}
 	}
